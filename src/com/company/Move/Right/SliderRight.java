@@ -1,0 +1,43 @@
+package com.company.Move.Right;
+
+import com.company.Cube;
+import com.company.CubePanel;
+
+import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
+public class SliderRight extends JSlider{
+    private SliderRight slider;
+    private final Cube cube;
+    private final CubePanel panel;
+    private double oldValue;
+
+    public SliderRight(Cube cube, CubePanel panel){
+        super(0, 400, 0);
+        this.cube = cube;
+        this.panel = panel;
+        this.slider = this;
+
+        SliderListener listener = new SliderListener();
+        this.addChangeListener(listener);
+
+    }
+
+    private class SliderListener implements ChangeListener {
+        @Override
+        public void stateChanged(ChangeEvent e) {
+            int x = 0;
+            if(slider.getValue() < oldValue){
+                x = (int) (-Math.abs(slider.getValue()-oldValue));
+            }
+            else if(slider.getValue() > oldValue){
+                x = (int) (Math.abs(slider.getValue()-oldValue));
+            }
+            oldValue = slider.getValue();
+            cube.translate(x, 0, 0);
+            panel.repaint();
+        }
+    }
+}
+
